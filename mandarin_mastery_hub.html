@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandarin Mastery Hub - Ultimate Chinese Learning Ecosystem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+        .hanzi-font { font-family: 'Noto Sans SC', sans-serif; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-3 flex items-center justify-between z-20 shrink-0 shadow-sm">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                中
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg lg:text-xl tracking-tight bg-gradient-to-r from-red-600 to-amber-500 bg-clip-text text-transparent">
+                    Mandarin Mastery Hub
+                </h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Zero to Fluent Complete Ecosystem</p>
+            </div>
+        </div>
+
+        <!-- Global Stats & Controls -->
+        <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex items-center space-x-3 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full text-xs font-semibold">
+                <span class="flex items-center text-amber-500"><i class="fa-solid fa-fire mr-1.5"></i><span id="streak-count">7</span> Day Streak</span>
+                <span class="text-slate-300 dark:text-slate-700">|</span>
+                <span class="flex items-center text-red-500"><i class="fa-solid fa-bolt mr-1.5"></i><span id="xp-count">1,420</span> XP</span>
+                <span class="text-slate-300 dark:text-slate-700">|</span>
+                <span class="flex items-center text-emerald-500"><i class="fa-solid fa-graduation-cap mr-1.5"></i><span id="level-badge">HSK 2</span></span>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button onclick="toggleDarkMode()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Toggle Theme">
+                <i class="fa-solid fa-moon dark:hidden"></i>
+                <i class="fa-solid fa-sun hidden dark:block"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Layout: Sidebar & Content Area -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-20 lg:w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between py-4 z-10 shrink-0">
+            <nav class="space-y-1.5 px-3">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl font-medium text-sm transition tab-btn bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400">
+                    <i class="fa-solid fa-house text-lg w-6 text-center"></i>
+                    <span class="hidden lg:inline">Dashboard</span>
+                </button>
+                <button onclick="switchTab('roadmap')" id="nav-roadmap" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl font-medium text-sm transition tab-btn text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-road text-lg w-6 text-center"></i>
+                    <span class="hidden lg:inline">Curriculum Roadmap</span>
+                </button>
+                <button onclick="switchTab('lessons')" id="nav-lessons" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl font-medium text-sm transition tab-btn text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-book-open text-lg w-6 text-center"></i>
+                    <span class="hidden lg:inline">Interactive Lessons</span>
+                </button>
+                <button onclick="switchTab('writing')" id="nav-writing" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl font-medium text-sm transition tab-btn text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-pen-nib text-lg w-6 text-center"></i>
+                    <span class="hidden lg:inline">Hanzi Writing Lab</span>
+                </button>
+                <button onclick="switchTab('flashcards')" id="nav-flashcards" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl font-medium text-sm transition tab-btn text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-clone text-lg w-6 text-center"></i>
+                    <span class="hidden lg:inline">SRS Flashcards</span>
+                </button>
+                <button onclick="switchTab('ai')" id="nav-ai" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl font-medium text-sm transition tab-btn text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-robot text-lg w-6 text-center"></i>
+                    <span class="hidden lg:inline">AI Speaking Tutor</span>
+                </button>
+            </nav>
+
+            <!-- Bottom User Info / Progress quick card -->
+            <div class="px-4 hidden lg:block">
+                <div class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                    <div class="flex justify-between items-center mb-1 text-xs font-semibold">
+                        <span>Fluency Progress</span>
+                        <span class="text-red-500">24%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                        <div class="bg-gradient-to-r from-red-600 to-amber-500 h-full w-[24%] rounded-full"></div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-2">Goal: Native Fluency & HSK 6</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Scroll Area -->
+        <main class="flex-1 overflow-y-auto p-4 lg:p-8" id="main-content-container">
+            
+            <!-- TAB 1: DASHBOARD -->
+            <div id="tab-dashboard" class="tab-content space-y-6 max-w-6xl mx-auto">
+                <!-- Welcome Banner -->
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 p-6 lg:p-8 text-white shadow-xl">
+                    <div class="absolute right-4 -bottom-6 opacity-10 text-9xl font-extrabold hanzi-font">语</div>
+                    <div class="relative z-10 max-w-2xl">
+                        <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-wider mb-3 inline-block">Absolute Beginner to Native Fluency</span>
+                        <h2 class="text-2xl lg:text-4xl font-extrabold mb-3">Welcome back, Scholar! 欢迎回来</h2>
+                        <p class="text-red-100 text-sm lg:text-base mb-6 leading-relaxed">
+                            Your complete immersion web app is ready. Master tones, stroke orders, grammar structures, and chat with your AI partner without ever leaving this browser.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="switchTab('roadmap')" class="px-5 py-2.5 bg-white text-red-600 font-bold rounded-xl text-sm shadow-lg hover:bg-red-50 transition flex items-center">
+                                <i class="fa-solid fa-play mr-2"></i> Continue Learning
+                            </button>
+                            <button onclick="switchTab('ai')" class="px-5 py-2.5 bg-red-900/40 backdrop-blur-md border border-white/30 text-white font-bold rounded-xl text-sm hover:bg-red-900/60 transition flex items-center">
+                                <i class="fa-solid fa-comments mr-2"></i> Practice with AI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Mastered Characters</p>
+                            <h3 class="text-2xl font-extrabold text-slate-800 dark:text-slate-100">184 <span class="text-xs font-normal text-slate-400">/ 5,000</span></h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Study Time Today</p>
+                            <h3 class="text-2xl font-extrabold text-slate-800 dark:text-slate-100">45 <span class="text-xs font-normal text-slate-400">mins</span></h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">SRS Due Cards</p>
+                            <h3 class="text-2xl font-extrabold text-slate-800 dark:text-slate-100" id="srs-due-count">12</h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Conversational Score</p>
+                            <h3 class="text-2xl font-extrabold text-slate-800 dark:text-slate-100">B1 <span class="text-xs font-normal text-slate-400">Intermediate</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Mission & Recommended Modules -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Today's Complete Mastery Mission</h3>
+                            <span class="text-xs bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 font-semibold px-2.5 py-1 rounded-full">3 of 5 Completed</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div>
+                                    <div>
+                                        <h4 class="font-semibold text-sm">Pinyin & Tone Pair Drill</h4>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">Second tone vs Third tone practice</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">+50 XP</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div>
+                                    <div>
+                                        <h4 class="font-semibold text-sm">SRS Flashcard Review</h4>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">12 due items reviewed</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">+40 XP</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 rounded-2xl bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/30">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-play"></i></div>
+                                    <div>
+                                        <h4 class="font-semibold text-sm">Hanzi Stroke Writing: 认识 (rènshi)</h4>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">Practice character drawing canvas</p>
+                                    </div>
+                                </div>
+                                <button onclick="switchTab('writing')" class="px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition">Start</button>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 flex items-center justify-center text-xs"><i class="fa-solid fa-lock"></i></div>
+                                    <div>
+                                        <h4 class="font-semibold text-sm">AI Conversational Roleplay</h4>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">Ordering food in a Beijing restaurant</p>
+                                    </div>
+                                </div>
+                                <button onclick="switchTab('ai')" class="px-3 py-1.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-lg hover:bg-slate-300 transition">Unlock</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick AI Coach Tip -->
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 text-red-600 dark:text-red-400 mb-3">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span class="font-bold text-sm">AI Daily Fluency Tip</span>
+                            </div>
+                            <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2">Mastering the 'ü' Sound</h4>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                                To pronounce <span class="font-semibold text-red-500">ü</span> (like in 绿 lǜ), shape your lips as if saying "oo" (u), but position your tongue to say "ee" (i). Practice aloud using the built-in audio simulator!
+                            </p>
+                        </div>
+                        <button onclick="playAudio('绿 lǜ')" class="w-full py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs transition flex items-center justify-center">
+                            <i class="fa-solid fa-volume-high mr-2"></i> Listen to Pronunciation
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: CURRICULUM ROADMAP -->
+            <div id="tab-roadmap" class="tab-content hidden space-y-6 max-w-5xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <h2 class="text-2xl lg:text-3xl font-extrabold mb-2">Comprehensive Curriculum Roadmap</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">From Absolute Beginner (Level 1) to Native Fluency & Advanced Literary Chinese (Level 6+). Nothing left out.</p>
+                </div>
+
+                <div class="space-y-6 relative before:absolute before:inset-0 before:left-8 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-800">
+                    
+                    <!-- Level 1 -->
+                    <div class="relative flex items-start space-x-4">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600 text-white font-extrabold flex items-center justify-center text-lg z-10 shadow-lg shrink-0">
+                            L1
+                        </div>
+                        <div class="flex-1 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Foundations: Pinyin, 4 Tones & Initials</h3>
+                                <span class="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full">Completed</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                                Master the 21 initials, 36 finals, tone marks, tone sandhi rules (third tone change), and absolute basic greetings.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium">Bopomofo vs Pinyin</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium">Tone Pair Drills</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium">150 Basic Characters</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Level 2 -->
+                    <div class="relative flex items-start space-x-4">
+                        <div class="w-16 h-16 rounded-2xl bg-amber-500 text-white font-extrabold flex items-center justify-center text-lg z-10 shadow-lg shrink-0">
+                            L2
+                        </div>
+                        <div class="flex-1 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Elementary Vocabulary & Core Grammar (HSK 1-2)</h3>
+                                <span class="px-2.5 py-1 bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 text-xs font-bold rounded-full">Current Level</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                                Subject-Verb-Object structures, basic time words, measure words (个, 本, 张), questions with 吗 (ma) and 呢 (ne), and 600 essential vocabulary words.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium">Measure Words</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium">Negation with 不 (bù) & 没 (méi)</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium">Shopping & Numbers</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Level 3 -->
+                    <div class="relative flex items-start space-x-4">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-extrabold flex items-center justify-center text-lg z-10 shadow-md shrink-0">
+                            L3
+                        </div>
+                        <div class="flex-1 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm opacity-90">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Intermediate Dialogues & Complex Sentences (HSK 3-4)</h3>
+                                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-xs font-bold rounded-full">Locked</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                                Directional complements, resultative complements, the 把 (bǎ) construction, passive sentences with 被 (bèi), and expressing comparisons with 比 (bǐ).
+                            </p>
+                            <button onclick="switchTab('lessons')" class="px-4 py-2 bg-red-600 text-white font-bold rounded-xl text-xs hover:bg-red-700 transition">Preview Lesson</button>
+                        </div>
+                    </div>
+
+                    <!-- Level 4 -->
+                    <div class="relative flex items-start space-x-4">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-extrabold flex items-center justify-center text-lg z-10 shadow-md shrink-0">
+                            L4
+                        </div>
+                        <div class="flex-1 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm opacity-80">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Advanced Idioms (Chengyu 成语) & Literary Nuances (HSK 5)</h3>
+                                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-xs font-bold rounded-full">Locked</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                                Four-character idioms, classical Chinese grammar roots (之, 其, 於), professional business vocabulary, and nuanced formal discourse.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Level 5 -->
+                    <div class="relative flex items-start space-x-4">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-extrabold flex items-center justify-center text-lg z-10 shadow-md shrink-0">
+                            L5
+                        </div>
+                        <div class="flex-1 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm opacity-70">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Native Fluency, Debate & Cultural Mastery (HSK 6+)</h3>
+                                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-xs font-bold rounded-full">Locked</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                                Academic debates, contemporary slang, regional dialects, classical poetry, and effortless spontaneous expression indistinguishable from a native speaker.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TAB 3: INTERACTIVE LESSONS -->
+            <div id="tab-lessons" class="tab-content hidden space-y-6 max-w-4xl mx-auto">
+                <div class="bg-white dark:bg-slate-900 p-6 lg:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div>
+                            <span class="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider">Lesson 2.4</span>
+                            <h2 class="text-xl lg:text-2xl font-extrabold">Expressing Daily Activities & Time</h2>
+                        </div>
+                        <button onclick="playAudio('我每天早上七点起床，吃早饭。')" class="px-4 py-2 bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 rounded-xl font-bold text-xs flex items-center hover:bg-red-100 transition">
+                            <i class="fa-solid fa-volume-high mr-2"></i> Play Dialogue Audio
+                        </button>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Dialogue Card -->
+                        <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 space-y-3">
+                            <h4 class="font-bold text-sm text-slate-400 uppercase tracking-wide">Dialogue 1: Daily Routine</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold hanzi-font text-slate-900 dark:text-slate-100">A: 你几点起床？ <span class="text-xs font-normal text-slate-500">(Nǐ jǐ diǎn qǐchuáng?)</span></p>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">What time do you get up?</p>
+                                    </div>
+                                    <button onclick="playAudio('你几点起床？')" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-volume-high"></i></button>
+                                </div>
+                                <div class="flex items-start justify-between pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
+                                    <div>
+                                        <p class="text-lg font-bold hanzi-font text-slate-900 dark:text-slate-100">B: 我早上七点起床。 <span class="text-xs font-normal text-slate-500">(Wǒ zǎoshang qī diǎn qǐchuáng.)</span></p>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">I get up at 7:00 in the morning.</p>
+                                    </div>
+                                    <button onclick="playAudio('我早上七点起床。')" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-volume-high"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grammar Breakdown Card -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
+                            <h4 class="font-bold text-sm text-red-600 dark:text-red-400 uppercase tracking-wider">Grammar Rule: Time Word Placement</h4>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                                In Mandarin Chinese, time words (like 早上 zǎoshang - morning, 七点 qī diǎn - 7 o'clock) almost always appear <span class="font-bold">before the verb</span> or right after the subject.
+                            </p>
+                            <div class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
+                                [Subject] + [Time] + [Verb] + [Object]
+                            </div>
+                        </div>
+
+                        <!-- Interactive Quiz Check -->
+                        <div class="p-6 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white space-y-4">
+                            <h4 class="font-bold text-sm text-amber-400 uppercase tracking-wider">Quick Knowledge Check</h4>
+                            <p class="text-sm">Translate this sentence into Chinese: <span class="font-semibold text-white">"I eat breakfast at 7:30."</span></p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="quiz-options">
+                                <button onclick="checkQuiz(false)" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs font-medium border border-slate-700 transition">
+                                    A) 我吃早饭七点半。
+                                </button>
+                                <button onclick="checkQuiz(true)" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs font-medium border border-slate-700 transition">
+                                    B) 我七点半吃早饭。
+                                </button>
+                            </div>
+                            <p id="quiz-feedback" class="text-xs font-bold hidden"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: HANZI WRITING LAB -->
+            <div id="tab-writing" class="tab-content hidden space-y-6 max-w-4xl mx-auto">
+                <div class="bg-white dark:bg-slate-900 p-6 lg:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                        <div>
+                            <span class="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider">Character Stroke Practice</span>
+                            <h2 class="text-xl lg:text-2xl font-extrabold">Hanzi Drawing & Stroke Order Lab</h2>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeWritingChar('识')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold hover:bg-red-50 hover:text-red-600 transition">识 (shí)</button>
+                            <button onclick="changeWritingChar('学')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold hover:bg-red-50 hover:text-red-600 transition">学 (xué)</button>
+                            <button onclick="changeWritingChar('中')" class="px-3 py-1.5 rounded-xl bg-red-600 text-white text-xs font-bold">中 (zhōng)</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                        <!-- Character Info -->
+                        <div class="space-y-4 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
+                            <div class="text-center">
+                                <span id="current-hanzi" class="text-7xl font-extrabold hanzi-font text-red-600 dark:text-red-400">中</span>
+                                <h3 id="current-pinyin" class="text-lg font-bold mt-2 text-slate-800 dark:text-slate-100">zhōng</h3>
+                                <p id="current-meaning" class="text-xs text-slate-500 dark:text-slate-400">Middle, China, Center</p>
+                            </div>
+                            <div class="border-t border-slate-200 dark:border-slate-700 pt-3 space-y-1 text-xs">
+                                <p><span class="font-semibold">Radical:</span> 丨 (shù)</p>
+                                <p><span class="font-semibold">Total Strokes:</span> 4 strokes</p>
+                                <p><span class="font-semibold">HSK Level:</span> Level 1</p>
+                            </div>
+                            <button onclick="playAudio(document.getElementById('current-hanzi').innerText)" class="w-full py-2 bg-red-600 text-white rounded-xl text-xs font-bold hover:bg-red-700 transition">
+                                <i class="fa-solid fa-volume-high mr-2"></i> Listen Pronunciation
+                            </button>
+                        </div>
+
+                        <!-- Canvas Drawing Area -->
+                        <div class="md:col-span-2 flex flex-col items-center">
+                            <div class="relative w-72 h-72 sm:w-80 sm:h-80 border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-3xl bg-white dark:bg-slate-950 overflow-hidden shadow-inner flex items-center justify-center">
+                                <!-- Background grid guide -->
+                                <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 pointer-events-none opacity-20">
+                                    <div class="border-r border-b border-slate-500"></div>
+                                    <div class="border-b border-slate-500"></div>
+                                    <div class="border-r border-slate-500"></div>
+                                    <div></div>
+                                </div>
+                                <span id="canvas-watermark" class="absolute text-[180px] font-extrabold hanzi-font text-slate-200 dark:text-slate-900/40 pointer-events-none select-none">中</span>
+                                <canvas id="drawing-canvas" class="absolute inset-0 w-full h-full cursor-crosshair touch-none"></canvas>
+                            </div>
+
+                            <div class="flex items-center space-x-3 mt-4">
+                                <button onclick="clearCanvas()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold transition">
+                                    <i class="fa-solid fa-rotate-left mr-1.5"></i> Clear Canvas
+                                </button>
+                                <button onclick="verifyDrawing()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-md">
+                                    <i class="fa-solid fa-check mr-1.5"></i> AI Stroke Check
+                                </button>
+                            </div>
+                            <p id="drawing-feedback" class="text-xs font-bold mt-2 text-emerald-600 dark:text-emerald-400 hidden"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: SRS FLASHCARDS -->
+            <div id="tab-flashcards" class="tab-content hidden space-y-6 max-w-2xl mx-auto">
+                <div class="text-center mb-4">
+                    <h2 class="text-2xl font-extrabold">Spaced Repetition Flashcards (SRS)</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Memorize thousands of characters and words with scientifically optimized review intervals.</p>
+                </div>
+
+                <!-- Flashcard Container -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-lg p-8 flex flex-col items-center min-h-[320px] justify-between relative cursor-pointer select-none" onclick="flipCard()">
+                    <div class="w-full flex justify-between text-xs text-slate-400 font-semibold">
+                        <span id="card-progress">Card 1 of 12</span>
+                        <span class="text-red-500 uppercase tracking-wider">HSK 2 Vocabulary</span>
+                    </div>
+
+                    <div class="text-center my-auto">
+                        <h3 id="card-front" class="text-6xl lg:text-7xl font-extrabold hanzi-font text-slate-800 dark:text-slate-100 mb-3">认识</h3>
+                        <p id="card-back" class="text-lg font-medium text-red-600 dark:text-red-400 hidden">rènshi - to know, to recognize</p>
+                        <p class="text-xs text-slate-400 mt-2" id="card-hint">(Click card to flip)</p>
+                    </div>
+
+                    <div class="w-full flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <button onclick="event.stopPropagation(); nextCard('hard')" class="px-4 py-2 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded-xl text-xs font-bold hover:bg-rose-100 transition">Hard</button>
+                        <button onclick="event.stopPropagation(); nextCard('good')" class="px-4 py-2 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-xl text-xs font-bold hover:bg-amber-100 transition">Good</button>
+                        <button onclick="event.stopPropagation(); nextCard('easy')" class="px-4 py-2 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-xl text-xs font-bold hover:bg-emerald-100 transition">Easy</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: AI SPEAKING TUTOR -->
+            <div id="tab-ai" class="tab-content hidden space-y-6 max-w-4xl mx-auto">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-[650px]">
+                    <!-- Chat Header -->
+                    <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between shrink-0">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 text-white flex items-center justify-center font-bold text-lg shadow-md">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm lg:text-base text-slate-800 dark:text-slate-100">小龙 (Xiǎolóng) - AI Mandarin Tutor</h3>
+                                <p class="text-[11px] text-emerald-500 font-medium flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Online • Real-time Tone Correction & Grammar Coach</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="scenario-select" onchange="changeAIScenario()" class="text-xs bg-slate-100 dark:bg-slate-800 border-none rounded-xl px-3 py-2 font-semibold text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-red-500">
+                                <option value="general">Scenario: General Conversation</option>
+                                <option value="restaurant">Scenario: Ordering Food in Beijing</option>
+                                <option value="travel">Scenario: Asking for Directions</option>
+                                <option value="business">Scenario: Business Greeting</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages Area -->
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center text-xs font-bold shrink-0">龙</div>
+                            <div class="max-w-md bg-slate-100 dark:bg-slate-800 p-4 rounded-2xl rounded-tl-none text-sm space-y-1">
+                                <p class="font-bold hanzi-font">你好！我是你的中文AI老师小龙。今天你想聊点什么？</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Nǐ hǎo! Wǒ shì nǐ de zhōngwén AI lǎoshī Xiǎolóng. Jīntiān nǐ xiǎng liáo diǎn shénme?</p>
+                                <p class="text-xs text-slate-600 dark:text-slate-300 pt-1">Hello! I am your AI Mandarin teacher, Xiaolong. What would you like to practice today?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input Bar -->
+                    <div class="p-4 border-t border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-900 rounded-b-3xl">
+                        <form onsubmit="sendAIMessage(event)" class="flex items-center space-x-3">
+                            <button type="button" onclick="simulateVoiceInput()" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-red-50 hover:text-red-600 transition" title="Simulate Voice Input">
+                                <i class="fa-solid fa-microphone text-sm"></i>
+                            </button>
+                            <input type="text" id="ai-user-input" placeholder="Type in Chinese, Pinyin, or English..." class="flex-1 bg-slate-100 dark:bg-slate-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 outline-none text-slate-800 dark:text-slate-100">
+                            <button type="submit" class="px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm transition shadow-md flex items-center">
+                                <i class="fa-solid fa-paper-plane mr-2"></i> Send
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Theme Management
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-red-50', 'dark:bg-red-950/40', 'text-red-600', 'dark:text-red-400');
+                el.classList.add('text-slate-600', 'dark:text-slate-400');
+            });
+
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+                activeBtn.classList.add('bg-red-50', 'dark:bg-red-950/40', 'text-red-600', 'dark:text-red-400');
+            }
+
+            // If switching to writing tab, init canvas
+            if (tabId === 'writing') {
+                setTimeout(initCanvas, 50);
+            }
+        }
+
+        // Audio Simulation using SpeechSynthesis API
+        function playAudio(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.85; // slightly slower for learners
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Quiz Logic
+        function checkQuiz(isCorrect) {
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+            if (isCorrect) {
+                feedback.innerText = "Correct! 正确！Time word comes right after subject.";
+                feedback.className = "text-xs font-bold text-emerald-400 mt-3";
+                // Add XP
+                let xp = parseInt(document.getElementById('xp-count').innerText.replace(',', '')) + 15;
+                document.getElementById('xp-count').innerText = xp.toLocaleString();
+            } else {
+                feedback.innerText = "Incorrect. Remember: [Subject] + [Time] + [Verb]. Try again!";
+                feedback.className = "text-xs font-bold text-rose-400 mt-3";
+            }
+        }
+
+        // Hanzi Writing Canvas Logic
+        let canvas, ctx, isDrawing = false;
+        function initCanvas() {
+            canvas = document.getElementById('drawing-canvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            
+            // Set canvas resolution ratio
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            
+            ctx.strokeStyle = document.documentElement.classList.contains('dark') ? '#f8fafc' : '#1e293b';
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Event Listeners for mouse and touch
+            canvas.onmousedown = startDraw;
+            canvas.onmousemove = draw;
+            canvas.onmouseup = stopDraw;
+            canvas.onmouseleave = stopDraw;
+
+            canvas.ontouchstart = (e) => { startDraw(e.touches[0]); e.preventDefault(); };
+            canvas.ontouchmove = (e) => { draw(e.touches[0]); e.preventDefault(); };
+            canvas.ontouchend = stopDraw;
+        }
+
+        function startDraw(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        function stopDraw() {
+            isDrawing = false;
+        }
+
+        function clearCanvas() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const feedback = document.getElementById('drawing-feedback');
+            feedback.classList.add('hidden');
+        }
+
+        function changeWritingChar(char) {
+            const data = {
+                '中': { pinyin: 'zhōng', meaning: 'Middle, China, Center' },
+                '学': { pinyin: 'xué', meaning: 'Study, Learn, School' },
+                '识': { pinyin: 'shí', meaning: 'Know, Recognize, Knowledge' }
+            };
+            document.getElementById('current-hanzi').innerText = char;
+            document.getElementById('canvas-watermark').innerText = char;
+            document.getElementById('current-pinyin').innerText = data[char].pinyin;
+            document.getElementById('current-meaning').innerText = data[char].meaning;
+            clearCanvas();
+        }
+
+        function verifyDrawing() {
+            const feedback = document.getElementById('drawing-feedback');
+            feedback.classList.remove('hidden');
+            feedback.innerText = "✨ AI Stroke Analysis: Excellent proportion and stroke order! +25 XP";
+            let xp = parseInt(document.getElementById('xp-count').innerText.replace(',', '')) + 25;
+            document.getElementById('xp-count').innerText = xp.toLocaleString();
+        }
+
+        // SRS Flashcard Logic
+        let currentCardIndex = 0;
+        const flashcards = [
+            { front: "认识", back: "rènshi - to know, to recognize" },
+            { front: "学习", back: "xuéxí - to study, to learn" },
+            { front: "汉字", back: "hànzì - Chinese character" },
+            { front: "流利", back: "liúlì - fluent" },
+            { front: "语法", back: "yǔfǎ - grammar" }
+        ];
+
+        let isCardFlipped = false;
+        function flipCard() {
+            isCardFlipped = !isCardFlipped;
+            const frontEl = document.getElementById('card-front');
+            const backEl = document.getElementById('card-back');
+            const hintEl = document.getElementById('card-hint');
+            
+            if (isCardFlipped) {
+                backEl.classList.remove('hidden');
+                hintEl.classList.add('hidden');
+            } else {
+                backEl.classList.add('hidden');
+                hintEl.classList.remove('hidden');
+            }
+        }
+
+        function nextCard(rating) {
+            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            isCardFlipped = false;
+            const card = flashcards[currentCardIndex];
+            document.getElementById('card-front').innerText = card.front;
+            document.getElementById('card-back').innerText = card.back;
+            document.getElementById('card-back').classList.add('hidden');
+            document.getElementById('card-hint').classList.remove('hidden');
+            document.getElementById('card-progress').innerText = `Card ${currentCardIndex + 1} of ${flashcards.length}`;
+            
+            // Reduce due count
+            let due = parseInt(document.getElementById('srs-due-count').innerText);
+            if (due > 0) {
+                document.getElementById('srs-due-count').innerText = due - 1;
+            }
+        }
+
+        // AI Speaking Tutor Logic
+        function sendAIMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('ai-user-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendChatMessage(text, 'user');
+            input.value = '';
+
+            // Simulate AI response
+            setTimeout(() => {
+                let aiReply = "太棒了！你的中文越来越流利了。我们继续练习吧。 (Wonderful! Your Chinese is getting more and more fluent. Let's keep practicing.)";
+                if (text.includes("吃") || text.includes("饭")) {
+                    aiReply = "我想吃北京烤鸭！你想吃什么？ (I want to eat Peking duck! What would you like to eat?)";
+                } else if (text.includes("你好") || text.includes("hi")) {
+                    aiReply = "你好！很高兴和你对话。今天过得怎么样？ (Hello! Glad to talk with you. How was your day today?)";
+                }
+                appendChatMessage(aiReply, 'ai');
+                playAudio(aiReply);
+            }, 1000);
+        }
+
+        function appendChatMessage(text, sender) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            
+            if (sender === 'user') {
+                div.className = "flex items-start justify-end space-x-3";
+                div.innerHTML = `
+                    <div class="max-w-md bg-red-600 text-white p-4 rounded-2xl rounded-tr-none text-sm shadow-md">
+                        <p>${escapeHtml(text)}</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-xl bg-slate-700 text-white flex items-center justify-center text-xs font-bold shrink-0">我</div>
+                `;
+            } else {
+                div.className = "flex items-start space-x-3";
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center text-xs font-bold shrink-0">龙</div>
+                    <div class="max-w-md bg-slate-100 dark:bg-slate-800 p-4 rounded-2xl rounded-tl-none text-sm space-y-1 shadow-sm">
+                        <p class="font-bold hanzi-font">${escapeHtml(text)}</p>
+                        <p class="text-[11px] text-emerald-500 font-medium">✓ Grammar & Tone Checked by AI</p>
+                    </div>
+                `;
+            }
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function simulateVoiceInput() {
+            const input = document.getElementById('ai-user-input');
+            input.value = "我想点一盘宫保鸡丁和一碗米饭。";
+            // trigger submit simulation
+        }
+
+        function changeAIScenario() {
+            const scenario = document.getElementById('scenario-select').value;
+            let intro = "我们开始练习通用日常对话吧！";
+            if (scenario === 'restaurant') intro = "欢迎光临！请问您想吃点什么？ (Welcome! What would you like to order?)";
+            if (scenario === 'travel') intro = "请问王府井大街怎么走？ (Excuse me, how do I get to Wangfujing Street?)";
+            if (scenario === 'business') intro = "幸会幸会，很高兴能与贵公司合作。 (Nice to meet you, very glad to cooperate with your company.)";
+            
+            appendChatMessage(intro, 'ai');
+            playAudio(intro);
+        }
+
+        function escapeHtml(string) {
+            return string.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+</html>
